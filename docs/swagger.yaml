@@ -1,0 +1,84 @@
+definitions:
+  main.Ad:
+    properties:
+      conditions:
+        $ref: '#/definitions/main.Conditions'
+      endAt:
+        type: string
+      startAt:
+        type: string
+      title:
+        type: string
+    type: object
+  main.Conditions:
+    properties:
+      ageEnd:
+        type: integer
+      ageStart:
+        type: integer
+      country:
+        items:
+          type: string
+        type: array
+      platform:
+        items:
+          type: string
+        type: array
+    type: object
+  main.Result:
+    properties:
+      sum:
+        type: integer
+    type: object
+info:
+  contact: {}
+paths:
+  /api/v1/ad:
+    post:
+      consumes:
+      - application/json
+      description: create ad by JSON
+      parameters:
+      - description: Create ad
+        in: body
+        name: ad
+        required: true
+        schema:
+          $ref: '#/definitions/main.Ad'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/main.Ad'
+      summary: Create OMGGG
+      tags:
+      - ads
+  /sum/{number1}/{number2}:
+    get:
+      consumes:
+      - application/json
+      description: It adds two numbers
+      parameters:
+      - description: Number 1 to add
+        in: path
+        name: number1
+        required: true
+        type: integer
+      - description: Number 2 to add
+        in: path
+        name: number2
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/main.Result'
+      summary: Sum two numbers
+      tags:
+      - numbers
+swagger: "2.0"

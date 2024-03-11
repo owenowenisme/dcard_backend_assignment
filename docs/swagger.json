@@ -1,0 +1,131 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "contact": {}
+    },
+    "paths": {
+        "/api/v1/ad": {
+            "post": {
+                "description": "create ad by JSON",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "ads"
+                ],
+                "summary": "Create OMGGG",
+                "parameters": [
+                    {
+                        "description": "Create ad",
+                        "name": "ad",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/main.Ad"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/main.Ad"
+                        }
+                    }
+                }
+            }
+        },
+        "/sum/{number1}/{number2}": {
+            "get": {
+                "description": "It adds two numbers",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "numbers"
+                ],
+                "summary": "Sum two numbers",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Number 1 to add",
+                        "name": "number1",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Number 2 to add",
+                        "name": "number2",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/main.Result"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "main.Ad": {
+            "type": "object",
+            "properties": {
+                "conditions": {
+                    "$ref": "#/definitions/main.Conditions"
+                },
+                "endAt": {
+                    "type": "string"
+                },
+                "startAt": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "main.Conditions": {
+            "type": "object",
+            "properties": {
+                "ageEnd": {
+                    "type": "integer"
+                },
+                "ageStart": {
+                    "type": "integer"
+                },
+                "country": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "platform": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "main.Result": {
+            "type": "object",
+            "properties": {
+                "sum": {
+                    "type": "integer"
+                }
+            }
+        }
+    }
+}
