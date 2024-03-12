@@ -16,6 +16,65 @@ const docTemplate = `{
     "basePath": "{{.BasePath}}",
     "paths": {
         "/api/v1/ad": {
+            "get": {
+                "description": "Retieve ad by Query",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Ads"
+                ],
+                "summary": "Retieve Ad",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Offset for pagination",
+                        "name": "offset",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Limit for pagination defalut 5",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Age to Query",
+                        "name": "age",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Gender",
+                        "name": "gender",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Country",
+                        "name": "country",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Platform",
+                        "name": "platform",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/main.QueryCondition"
+                        }
+                    }
+                }
+            },
             "post": {
                 "description": "create ad by JSON",
                 "consumes": [
@@ -25,9 +84,9 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "ads"
+                    "Ads"
                 ],
-                "summary": "Create OMGGG",
+                "summary": "Create Ad",
                 "parameters": [
                     {
                         "description": "Create ad",
@@ -40,49 +99,10 @@ const docTemplate = `{
                     }
                 ],
                 "responses": {
-                    "200": {
-                        "description": "OK",
+                    "201": {
+                        "description": "Created",
                         "schema": {
                             "$ref": "#/definitions/main.Ad"
-                        }
-                    }
-                }
-            }
-        },
-        "/sum/{number1}/{number2}": {
-            "get": {
-                "description": "It adds two numbers",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "numbers"
-                ],
-                "summary": "Sum two numbers",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "Number 1 to add",
-                        "name": "number1",
-                        "in": "path",
-                        "required": true
-                    },
-                    {
-                        "type": "integer",
-                        "description": "Number 2 to add",
-                        "name": "number2",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/main.Result"
                         }
                     }
                 }
@@ -122,6 +142,9 @@ const docTemplate = `{
                         "type": "string"
                     }
                 },
+                "gender": {
+                    "type": "string"
+                },
                 "platform": {
                     "type": "array",
                     "items": {
@@ -130,11 +153,26 @@ const docTemplate = `{
                 }
             }
         },
-        "main.Result": {
+        "main.QueryCondition": {
             "type": "object",
             "properties": {
-                "sum": {
+                "age": {
                     "type": "integer"
+                },
+                "country": {
+                    "type": "string"
+                },
+                "gender": {
+                    "type": "string"
+                },
+                "limit": {
+                    "type": "integer"
+                },
+                "offset": {
+                    "type": "integer"
+                },
+                "platform": {
+                    "type": "string"
                 }
             }
         }

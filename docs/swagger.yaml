@@ -20,20 +20,71 @@ definitions:
         items:
           type: string
         type: array
+      gender:
+        type: string
       platform:
         items:
           type: string
         type: array
     type: object
-  main.Result:
+  main.QueryCondition:
     properties:
-      sum:
+      age:
         type: integer
+      country:
+        type: string
+      gender:
+        type: string
+      limit:
+        type: integer
+      offset:
+        type: integer
+      platform:
+        type: string
     type: object
 info:
   contact: {}
 paths:
   /api/v1/ad:
+    get:
+      consumes:
+      - application/json
+      description: Retieve ad by Query
+      parameters:
+      - description: Offset for pagination
+        in: query
+        name: offset
+        type: integer
+      - description: Limit for pagination defalut 5
+        in: query
+        name: limit
+        type: integer
+      - description: Age to Query
+        in: query
+        name: age
+        type: integer
+      - description: Gender
+        in: query
+        name: gender
+        type: string
+      - description: Country
+        in: query
+        name: country
+        type: string
+      - description: Platform
+        in: query
+        name: platform
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/main.QueryCondition'
+      summary: Retieve Ad
+      tags:
+      - Ads
     post:
       consumes:
       - application/json
@@ -48,37 +99,11 @@ paths:
       produces:
       - application/json
       responses:
-        "200":
-          description: OK
+        "201":
+          description: Created
           schema:
             $ref: '#/definitions/main.Ad'
-      summary: Create OMGGG
+      summary: Create Ad
       tags:
-      - ads
-  /sum/{number1}/{number2}:
-    get:
-      consumes:
-      - application/json
-      description: It adds two numbers
-      parameters:
-      - description: Number 1 to add
-        in: path
-        name: number1
-        required: true
-        type: integer
-      - description: Number 2 to add
-        in: path
-        name: number2
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/main.Result'
-      summary: Sum two numbers
-      tags:
-      - numbers
+      - Ads
 swagger: "2.0"
