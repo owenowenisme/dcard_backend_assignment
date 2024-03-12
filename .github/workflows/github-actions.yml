@@ -25,5 +25,8 @@ jobs:
       - name: Run golangci-lint
         run: golangci-lint run ./...
 
+      - name: Build PostgreSQL container
+        run: docker-compose up -d
+
       - name: Build and test
         run: go build ./... && go test ./...
