@@ -21,6 +21,8 @@ jobs:
       - name: install go modules
         run: go mod download
         
+      - name: Install Swag
+        run: go get -u github.com/swaggo/swag/cmd/swag && go install github.com/swaggo/swag/cmd/swag
 
       - name: Swag init
         run: swag init
