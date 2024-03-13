@@ -2,20 +2,25 @@ package main
 
 import (
 	"database/sql"
+	"os"
 	"fmt"
 	"log"
 	_ "github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 	"github.com/lib/pq"
 )
-const (
-    host     = "localhost"
-    port     = 5433
-    user     = "test"
-    password = "12345678"
-    dbname   = "ads"
-)
+func init() {
+    if err := godotenv.Load(); err != nil {
+        log.Print("No .env file found")
+    }
+}
 func connectDB() *sql.DB {
-	db, err := sql.Open("postgres", fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable",host, port, user, password, dbname))
+	host := os.Getenv("DB_HOST")
+    port := os.Getenv("DB_PORT")
+    user := os.Getenv("DB_USER")
+    password := os.Getenv("DB_PASSWORD")
+    dbname := os.Getenv("DB_NAME")
+	db, err := sql.Open("postgres", fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",host, port, user, password, dbname))
 	if err != nil {
 		panic(err)
 	}
@@ -109,4 +114,14 @@ func retrieveAds(q QueryCondition) ([]map[string]interface{}, error){
 		result = append(result, row)
 	}
 	return result,nil
+}
+func getNOW() string{
+	db := connectDB()
+	defer db.Close()
+	var now string
+	err := db.QueryRow("SELECT NOW()").Scan(&now)
+	if err != nil {
+		panic(err)
+	}
+	return now
 }

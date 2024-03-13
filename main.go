@@ -5,7 +5,6 @@ import (
 	"net/http"
 	"strconv"
 	_ "dcard_backend_assignment/docs" // replace with your project path
-	"fmt"
 	"github.com/gin-gonic/gin"
 	_ "github.com/lib/pq"
 	swaggerFiles "github.com/swaggo/files"
@@ -17,7 +16,7 @@ import (
 // @Tags Ads
 // @Accept   json
 // @Produce  json
-// @Param   ad   body   main.Ad   true   "Create ad"
+// @Param   ad   body   main.Ad   true  "Create ad"
 // @Success 201 {object} main.Ad
 // @Router /api/v1/ad [post]
 func adminApi(c *gin.Context) {
@@ -26,8 +25,6 @@ func adminApi(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	log.Println("Created ad:")
-	fmt.Fprintf(c.Writer, "Created ad: %v", ad)
 	createAds(ad)
 	c.JSON(http.StatusCreated, ad)
 }
@@ -64,12 +61,26 @@ func publicApi(c *gin.Context) {
 	result, _ := retrieveAds(queryCondition)
 	c.JSON(http.StatusOK, result)
 }
+
+// @Summary Get now time in DB
+// @Description Now
+// @Tags For development
+// @Accept   json
+// @Produce  json
+// @Success 200 {object} string
+// @Router /api/v1/now [get]
+func NowTimeInDB(c *gin.Context) {
+	result := getNOW()
+	c.JSON(http.StatusOK, result)
+}
+
 func main() {
 	gin.SetMode(gin.DebugMode)
 	router := gin.Default()
 
 	router.POST("/api/v1/ad", adminApi)
 	router.GET("/api/v1/ad", publicApi)
+	router.GET("/api/v1/now", NowTimeInDB)
 	url := ginSwagger.URL("http://localhost:8080/swagger/doc.json") // The url pointing to API definition
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
 
