@@ -17,6 +17,11 @@ jobs:
         uses: actions/setup-go@v2
         with:
           go-version: 1.22
+
+      - name: install go modules
+        run: go mod download
+        
+
       - name: Swag init
         run: swag init
 
