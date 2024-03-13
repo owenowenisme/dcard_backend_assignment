@@ -22,8 +22,8 @@ import (
 // @Param   ad   body   main.Ad   true  "Create ad"
 // @Success 201 {object} main.Ad
 // @Router /api/v1/ad [post]
-func adminApi(c *gin.Context) {
-	ad := initAds()
+func AdminApi(c *gin.Context) {
+	ad := InitAds()
 	if err := c.ShouldBindJSON(&ad); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -52,7 +52,7 @@ func adminApi(c *gin.Context) {
         c.JSON(http.StatusBadRequest, gin.H{"error": "StartAt should be less than EndAt"})
         return
     }
-	id,err:=createAds(ad)
+	id,err:=CreateAds(ad)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -73,7 +73,7 @@ func adminApi(c *gin.Context) {
 // @Param   platform   query   string   false   "Platform"
 // @Success 200 {object} main.QueryCondition
 // @Router /api/v1/ad [get]
-func publicApi(c *gin.Context) {
+func PublicApi(c *gin.Context) {
 	offset, _ := strconv.Atoi(c.Query("offset"))
     limit, _ := strconv.Atoi(c.Query("limit"))
 	age, _ := strconv.Atoi(c.Query("age"))
@@ -89,7 +89,7 @@ func publicApi(c *gin.Context) {
 		Country:  country,
 		Platform: platform,
 	}
-	result, err := retrieveAds(queryCondition)
+	result, err := RetrieveAds(queryCondition)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -117,8 +117,8 @@ func main() {
 	gin.SetMode(gin.DebugMode)
 	router := gin.Default()
 
-	router.POST("/api/v1/ad", adminApi)
-	router.GET("/api/v1/ad", publicApi)
+	router.POST("/api/v1/ad", AdminApi)
+	router.GET("/api/v1/ad", PublicApi)
 	router.GET("/api/v1/now", NowTimeInDB)
 	url := ginSwagger.URL("http://localhost:8080/swagger/doc.json") // The url pointing to API definition
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))

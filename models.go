@@ -21,14 +21,14 @@ type QueryCondition struct {
     Country  string `json:"country"`
     Platform string `json:"platform"`
 }
-func initConditions() Conditions {
+func InitConditions() Conditions {
     return Conditions{
         AgeStart: -1,
         AgeEnd:   -1,
     }
 }
-func initAds() Ad {
+func InitAds() Ad {
     return Ad{
-        Conditions: initConditions(),
+        Conditions: InitConditions(),
     }
 }

@@ -16,7 +16,7 @@ func init() {
     }
 }
 
-func connectDB() (*sql.DB, error) {
+func ConnectDB() (*sql.DB, error) {
 	host := os.Getenv("DB_HOST")
     port := os.Getenv("DB_PORT")
     user := os.Getenv("DB_USER")
@@ -29,8 +29,8 @@ func connectDB() (*sql.DB, error) {
 	return db, nil
 }
 
-func createAds(ad Ad) (int, error) {
-	db, err := connectDB()
+func CreateAds(ad Ad) (int, error) {
+	db, err := ConnectDB()
 	if err != nil {
 		return -1,err
 	}
@@ -48,8 +48,8 @@ func createAds(ad Ad) (int, error) {
 	return id,nil
 }
 
-func retrieveAds(q QueryCondition) ([]map[string]interface{}, error) {
-	db, err := connectDB()
+func RetrieveAds(q QueryCondition) ([]map[string]interface{}, error) {
+	db, err := ConnectDB()
 	if err != nil {
 		return nil, err
 	}
@@ -127,7 +127,7 @@ func retrieveAds(q QueryCondition) ([]map[string]interface{}, error) {
 }
 
 func getNOW() (string, error) {
-	db, err := connectDB()
+	db, err := ConnectDB()
 	if err != nil {
 		return "", err
 	}
