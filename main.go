@@ -1,10 +1,13 @@
 package main
 
 import (
+	_ "dcard_backend_assignment/docs" // replace with your project path
+	"fmt"
 	"log"
 	"net/http"
 	"strconv"
-	_ "dcard_backend_assignment/docs" // replace with your project path
+	"time"
+
 	"github.com/gin-gonic/gin"
 	_ "github.com/lib/pq"
 	swaggerFiles "github.com/swaggo/files"
@@ -20,13 +23,41 @@ import (
 // @Success 201 {object} main.Ad
 // @Router /api/v1/ad [post]
 func adminApi(c *gin.Context) {
-	var ad Ad
+	ad := initAds()
 	if err := c.ShouldBindJSON(&ad); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	createAds(ad)
-	c.JSON(http.StatusCreated, ad)
+	if (ad.Conditions.AgeStart < 0) != (ad.Conditions.AgeEnd < 0 ){// if both are -1, means no age condition
+		c.JSON(http.StatusBadRequest, gin.H{"error": "AgeStart and AgeEnd should be positive"})
+		return
+	}
+	if ad.Conditions.AgeStart > ad.Conditions.AgeEnd {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "AgeStart should be less than AgeEnd"})
+		return
+	}
+	startAt, err := time.Parse(time.RFC3339, ad.StartAt)
+    if err != nil {
+        c.JSON(http.StatusBadRequest, gin.H{"error": "invalid StartAt format"})
+        return
+    }
+
+    endAt, err := time.Parse(time.RFC3339, ad.EndAt)
+    if err != nil {
+        c.JSON(http.StatusBadRequest, gin.H{"error": "invalid EndAt format"})
+        return
+    }
+
+    if startAt.After(endAt) {
+        c.JSON(http.StatusBadRequest, gin.H{"error": "StartAt should be less than EndAt"})
+        return
+    }
+	id,err:=createAds(ad)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusCreated, gin.H{"message": fmt.Sprintf("Ad created as Id:%d successfully",id)})
 }
 
 // @Summary Retieve Ad
@@ -58,7 +89,15 @@ func publicApi(c *gin.Context) {
 		Country:  country,
 		Platform: platform,
 	}
-	result, _ := retrieveAds(queryCondition)
+	result, err := retrieveAds(queryCondition)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	if len(result) == 0 {
+		c.JSON(http.StatusNotFound, gin.H{"error": "No data found"})
+		return
+	}
 	c.JSON(http.StatusOK, result)
 }
 
@@ -70,7 +109,7 @@ func publicApi(c *gin.Context) {
 // @Success 200 {object} string
 // @Router /api/v1/now [get]
 func NowTimeInDB(c *gin.Context) {
-	result := getNOW()
+	result,_ := getNOW()
 	c.JSON(http.StatusOK, result)
 }
 

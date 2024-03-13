@@ -9,12 +9,14 @@ import (
 	"github.com/joho/godotenv"
 	"github.com/lib/pq"
 )
+
 func init() {
     if err := godotenv.Load(); err != nil {
         log.Print("No .env file found")
     }
 }
-func connectDB() *sql.DB {
+
+func connectDB() (*sql.DB, error) {
 	host := os.Getenv("DB_HOST")
     port := os.Getenv("DB_PORT")
     user := os.Getenv("DB_USER")
@@ -22,12 +24,16 @@ func connectDB() *sql.DB {
     dbname := os.Getenv("DB_NAME")
 	db, err := sql.Open("postgres", fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",host, port, user, password, dbname))
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
-	return db
+	return db, nil
 }
-func createAds(ad Ad) {
-	db := connectDB()
+
+func createAds(ad Ad) (int, error) {
+	db, err := connectDB()
+	if err != nil {
+		return -1,err
+	}
 	defer db.Close()
 
 	sqlStatement := `
@@ -35,13 +41,18 @@ func createAds(ad Ad) {
 	VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
 	RETURNING id`
 	id := 0
-	err := db.QueryRow(sqlStatement, ad.Title, ad.StartAt, ad.EndAt, ad.Conditions.AgeStart, ad.Conditions.AgeEnd, pq.Array(ad.Conditions.Country), pq.Array(ad.Conditions.Platform),ad.Conditions.Gender).Scan(&id)
+	err = db.QueryRow(sqlStatement, ad.Title, ad.StartAt, ad.EndAt, ad.Conditions.AgeStart, ad.Conditions.AgeEnd, pq.Array(ad.Conditions.Country), pq.Array(ad.Conditions.Platform),ad.Conditions.Gender).Scan(&id)
 	if err != nil {
-		panic(err)
+		return -1,err
 	}
+	return id,nil
 }
-func retrieveAds(q QueryCondition) ([]map[string]interface{}, error){
-	db := connectDB()
+
+func retrieveAds(q QueryCondition) ([]map[string]interface{}, error) {
+	db, err := connectDB()
+	if err != nil {
+		return nil, err
+	}
 	defer db.Close()
 
 	sqlStatement := "SELECT * FROM ads WHERE NOW() BETWEEN start_at AND end_at"
@@ -49,12 +60,12 @@ func retrieveAds(q QueryCondition) ([]map[string]interface{}, error){
 
 	i := 1
 	if q.Age != 0 {
-		sqlStatement += fmt.Sprintf(" AND (age_start <= $%d AND age_end >= $%d OR age IS NULL)", i, i)
+		sqlStatement += fmt.Sprintf(" AND (age_start <= $%d AND age_end >= $%d OR (age_start = -1 AND age_end = -1))", i, i)
 		args = append(args, q.Age)
 		i++
 	}
 	if q.Gender != "" {
-		sqlStatement += fmt.Sprintf(" AND (gender = $%d OR gender IS NULL)", i)
+		sqlStatement += fmt.Sprintf(" AND (gender = $%d OR gender = '')", i)
 		args = append(args, q.Gender)
 		i++
 	}
@@ -81,9 +92,8 @@ func retrieveAds(q QueryCondition) ([]map[string]interface{}, error){
 	sqlStatement += fmt.Sprintf(" LIMIT $%d",i)
 	args = append(args, q.Limit)
     rows, err := db.Query(sqlStatement, args...)
-	log.Println(sqlStatement,args)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 	defer rows.Close()
 
@@ -98,7 +108,7 @@ func retrieveAds(q QueryCondition) ([]map[string]interface{}, error){
 		}
 
 		if err := rows.Scan(pointers...); err != nil {
-			log.Fatal(err)
+			return nil, err
 		}
 
 		row := make(map[string]interface{})
@@ -113,15 +123,19 @@ func retrieveAds(q QueryCondition) ([]map[string]interface{}, error){
 		}
 		result = append(result, row)
 	}
-	return result,nil
+	return result, nil
 }
-func getNOW() string{
-	db := connectDB()
+
+func getNOW() (string, error) {
+	db, err := connectDB()
+	if err != nil {
+		return "", err
+	}
 	defer db.Close()
 	var now string
-	err := db.QueryRow("SELECT NOW()").Scan(&now)
+	err = db.QueryRow("SELECT NOW()").Scan(&now)
 	if err != nil {
-		panic(err)
+		return "", err
 	}
-	return now
+	return now, nil
 }
