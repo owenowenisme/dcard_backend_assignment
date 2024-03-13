@@ -88,9 +88,9 @@ func retrieveAds(q QueryCondition) ([]map[string]interface{}, error){
 	defer rows.Close()
 
 	columns,_ := rows.Columns()
-	
-	values := make([]interface{}, len(columns)) 
-	pointers := make([]interface{}, len(columns)) 
+
+	values := make([]interface{}, len(columns))
+	pointers := make([]interface{}, len(columns))
 	var result []map[string]interface{}
 	for rows.Next() {
 		for i := range values {

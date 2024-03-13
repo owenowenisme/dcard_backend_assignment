@@ -20,7 +20,7 @@ jobs:
 
       - name: install go modules
         run: go mod download
-        
+
       - name: Clear Go mod cache
         run: go clean -modcache
 

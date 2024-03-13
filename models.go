@@ -5,7 +5,7 @@ type Conditions struct {
     AgeEnd   int      `json:"ageEnd"`
     Gender   string   `json:"gender"`
     Country  []string `json:"country"`
-    Platform []string `json:"platform"` 
+    Platform []string `json:"platform"`
 }
 type Ad struct {
     Title      string     `json:"title"`
