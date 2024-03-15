@@ -1,10 +1,11 @@
 CREATE TABLE ads (
     id serial PRIMARY KEY,
     title varchar(100) NOT NULL,
-    StartAt timestamp with time zone NOT NULL,
-    EndAt timestamp with time zone NOT NULL,
-    AgeStart int,
-    AgeEnd int,
-    Country varchar(100)[],
-    Platform varchar(100)[]
+    start_at timestamp with time zone NOT NULL,
+    end_at timestamp with time zone NOT NULL,
+    age_start int,
+    age_end int,
+    country varchar(100)[],
+    platform varchar(100)[],
+    gender varchar(100)[]
 );
