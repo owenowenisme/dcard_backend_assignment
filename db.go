@@ -43,9 +43,9 @@ func CreateAds(ad Ad) (int, error) {
 	RETURNING id`
 	id := 0
 	err = db.QueryRow(sqlStatement, ad.Title, ad.StartAt, ad.EndAt, ad.Conditions.AgeStart, ad.Conditions.AgeEnd, pq.Array(ad.Conditions.Country), pq.Array(ad.Conditions.Platform),ad.Conditions.Gender).Scan(&id)
+	// err = fmt.Errorf("errors: %v, statement:%v, args:%v,%v,%v",err,sqlStatement,pq.Array(ad.Conditions.Country), pq.Array(ad.Conditions.Platform),ad.Conditions.Gender)
 	if err != nil {
-
-		err = fmt.Errorf("errors: %v, statement:%v, args:%v,%v",err,sqlStatement,pq.Array(ad.Conditions.Country), pq.Array(ad.Conditions.Platform))
+		err = fmt.Errorf("errors: %v, statement:%v, args:%v,%v%v",err,sqlStatement,pq.Array(ad.Conditions.Country), pq.Array(ad.Conditions.Platform),ad.Conditions.Gender)
 		return -1,err
 	}
 	return id,nil
