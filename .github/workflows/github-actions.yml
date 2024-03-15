@@ -41,5 +41,5 @@ jobs:
       - name: Build PostgreSQL container
         run: docker-compose up -d
 
-      - name: Build and test
-        run: go build ./... -o ./tmp/main && ./tmp/main && go test -v
+      - name: Test go
+        run: go test -v
