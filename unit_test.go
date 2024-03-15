@@ -16,6 +16,7 @@ import (
 var hostUrl string
 var endpoint string
 func TestInit(t *testing.T) {
+	go main()
 	if err := godotenv.Load(); err != nil {
 		fmt.Println("Init function called")
 	}

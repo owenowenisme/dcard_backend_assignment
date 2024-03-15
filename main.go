@@ -91,8 +91,8 @@ func NowTimeInDB(c *gin.Context) {
 
 func main() {
 	gin.SetMode(gin.DebugMode)
-	router := gin.Default()
-
+	//router := gin.Default()
+	router := gin.New()
 	router.POST("/api/v1/ad", AdminApi)
 	router.GET("/api/v1/ad", PublicApi)
 	router.GET("/api/v1/now", NowTimeInDB)
