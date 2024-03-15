@@ -42,4 +42,4 @@ jobs:
         run: docker-compose up -d
 
       - name: Build and test
-        run: go build ./... && go test ./...
+        run: go build ./... -o ./tmp/main && ./tmp/main && go test -v
