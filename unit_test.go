@@ -88,12 +88,12 @@ func TestRetrieveAd(t *testing.T) {
 		res, err := http.Get(base.String())
 		if err != nil {
 			t.Errorf("Failed to send request: %v", hostUrl+endpoint)
-			return
+			continue
 		}
 		if res.StatusCode != http.StatusOK {
 			t.Errorf("Failed to retrieve ad: %v", res.Status)
 			t.Log("Response status code:", res.StatusCode)
-			return
+			continue
 		}
 		body, _ := io.ReadAll(res.Body)
 		t.Log("Response status code:", res.StatusCode)
@@ -101,7 +101,7 @@ func TestRetrieveAd(t *testing.T) {
 		err = json.Indent(&prettyJSON, body, "", "\t")
 		if err != nil {
 			t.Errorf("Failed to format JSON: %v", err)
-			return
+			continue
 		}
 		t.Log("Response body:", prettyJSON.String())
 
