@@ -57,7 +57,7 @@ func RetrieveAds(q QueryCondition) ([]map[string]interface{}, error) {
 	defer db.Close()
 
 
-	sqlStatement := "SELECT * FROM ads WHERE $1 BETWEEN start_at AND end_at"
+	sqlStatement := "SELECT title, end_at FROM ads WHERE $1 BETWEEN start_at AND end_at"
     var args []interface{}
 	CurrentTime := time.Now().Local().Format("2006-01-02T15:04:05Z")
 	args = append(args, CurrentTime)

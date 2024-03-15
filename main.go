@@ -24,13 +24,17 @@ import (
 // @Router /api/v1/ad [post]
 func AdminApi(c *gin.Context) {
 	ad := InitAds()
-	verfiyCreateAd(c, &ad)
-	id,err:=CreateAds(ad)
+	err := verfiyCreateAd(c, &ad)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	c.JSON(http.StatusCreated, gin.H{"message": fmt.Sprintf("Ad created as Id:%d successfully",id)})
+	_,err=CreateAds(ad)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusCreated, gin.H{"message": fmt.Sprintf("Ad created as Id:%v successfully",ad.Title)})
 }
 
 // @Summary Retieve Ad
