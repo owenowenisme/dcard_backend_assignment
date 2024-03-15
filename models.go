@@ -25,6 +25,9 @@ func InitConditions() Conditions {
     return Conditions{
         AgeStart: -1,
         AgeEnd:   -1,
+        Gender:  "",
+        Country: []string{},
+        Platform: []string{},
     }
 }
 func InitAds() Ad {

@@ -35,6 +35,5 @@ func verfiyCreateAd(c *gin.Context,ad *Ad) error {
 	if ad.Conditions.Gender!="" && ad.Conditions.Gender!="M" && ad.Conditions.Gender!="F"{
 		return fmt.Errorf("Gender should be M or F")
 	}
-	fmt.Println("Ad verified successfully")
 	return nil
 }
