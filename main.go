@@ -24,34 +24,7 @@ import (
 // @Router /api/v1/ad [post]
 func AdminApi(c *gin.Context) {
 	ad := InitAds()
-	if err := c.ShouldBindJSON(&ad); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
-	if (ad.Conditions.AgeStart < 0) != (ad.Conditions.AgeEnd < 0 ){// if both are -1, means no age condition
-		c.JSON(http.StatusBadRequest, gin.H{"error": "AgeStart and AgeEnd should be positive"})
-		return
-	}
-	if ad.Conditions.AgeStart > ad.Conditions.AgeEnd {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "AgeStart should be less than AgeEnd"})
-		return
-	}
-	startAt, err := time.Parse(time.RFC3339, ad.StartAt)
-    if err != nil {
-        c.JSON(http.StatusBadRequest, gin.H{"error": "invalid StartAt format"})
-        return
-    }
-
-    endAt, err := time.Parse(time.RFC3339, ad.EndAt)
-    if err != nil {
-        c.JSON(http.StatusBadRequest, gin.H{"error": "invalid EndAt format"})
-        return
-    }
-
-    if startAt.After(endAt) {
-        c.JSON(http.StatusBadRequest, gin.H{"error": "StartAt should be less than EndAt"})
-        return
-    }
+	verfiyCreateAd(c, &ad)
 	id,err:=CreateAds(ad)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
@@ -61,9 +34,8 @@ func AdminApi(c *gin.Context) {
 }
 
 // @Summary Retieve Ad
-// @Description Retieve ad by Query
+// @Description Retieve ad by Query (Now time should be retrieve from user frontend, in this case, I use now time in server)
 // @Tags Ads
-// @Accept   json
 // @Produce  json
 // @Param   offset     query   int      false   "Offset for pagination"
 // @Param   limit      query   int      false   "Limit for pagination defalut 5"
@@ -95,7 +67,7 @@ func PublicApi(c *gin.Context) {
 		return
 	}
 	if len(result) == 0 {
-		c.JSON(http.StatusNotFound, gin.H{"error": "No data found"})
+		c.JSON(http.StatusOK, gin.H{"message": "No data found"})
 		return
 	}
 	c.JSON(http.StatusOK, result)
@@ -109,7 +81,7 @@ func PublicApi(c *gin.Context) {
 // @Success 200 {object} string
 // @Router /api/v1/now [get]
 func NowTimeInDB(c *gin.Context) {
-	result,_ := getNOW()
+	result := time.Now().Local().Format("2006-01-02T15:04:05Z")
 	c.JSON(http.StatusOK, result)
 }
 

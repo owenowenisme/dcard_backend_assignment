@@ -8,6 +8,7 @@ import (
 	_ "github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	"github.com/lib/pq"
+	"time"
 )
 
 func init() {
@@ -55,10 +56,12 @@ func RetrieveAds(q QueryCondition) ([]map[string]interface{}, error) {
 	}
 	defer db.Close()
 
-	sqlStatement := "SELECT * FROM ads WHERE NOW() BETWEEN start_at AND end_at"
-    var args []interface{}
 
-	i := 1
+	sqlStatement := "SELECT * FROM ads WHERE $1 BETWEEN start_at AND end_at"
+    var args []interface{}
+	CurrentTime := time.Now().Local().Format("2006-01-02T15:04:05Z")
+	args = append(args, CurrentTime)
+	i := 2
 	if q.Age != 0 {
 		sqlStatement += fmt.Sprintf(" AND (age_start <= $%d AND age_end >= $%d OR (age_start = -1 AND age_end = -1))", i, i)
 		args = append(args, q.Age)
@@ -124,18 +127,4 @@ func RetrieveAds(q QueryCondition) ([]map[string]interface{}, error) {
 		result = append(result, row)
 	}
 	return result, nil
-}
-
-func getNOW() (string, error) {
-	db, err := ConnectDB()
-	if err != nil {
-		return "", err
-	}
-	defer db.Close()
-	var now string
-	err = db.QueryRow("SELECT NOW()").Scan(&now)
-	if err != nil {
-		return "", err
-	}
-	return now, nil
 }
