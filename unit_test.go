@@ -18,7 +18,7 @@ var endpoint string
 func TestInit(t *testing.T) {
 	go main()
 	if err := godotenv.Load(); err != nil {
-		fmt.Println("Init function called")
+		fmt.Println("No .env file found")
 	}
 
 	fmt.Println("Init function called")

@@ -1,13 +1,14 @@
 package main
 
 import (
-	_ "dcard_backend_assignment/docs" // replace with your project path
+	_ "dcard_backend_assignment/docs"
 	"fmt"
 	"log"
 	"net/http"
 	"strconv"
-
+	"github.com/joho/godotenv"
 	"github.com/gin-gonic/gin"
+	"os"
 	_ "github.com/lib/pq"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
@@ -77,12 +78,16 @@ func PublicApi(c *gin.Context) {
 }
 
 func main() {
+	if err := godotenv.Load(); err != nil {
+		fmt.Println("No .env file found")
+	}
+	HOST_URL := os.Getenv("HOST_URL")
 	gin.SetMode(gin.DebugMode)
 	//router := gin.Default()
 	router := gin.New()
 	router.POST("/api/v1/ad", AdminApi)
 	router.GET("/api/v1/ad", PublicApi)
-	url := ginSwagger.URL("http://localhost:8080/swagger/doc.json") // The url pointing to API definition
+	url := ginSwagger.URL(HOST_URL+"/swagger/doc.json") // The url pointing to API definition
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
 
 	err := router.Run()
