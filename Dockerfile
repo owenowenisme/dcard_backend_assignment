@@ -8,7 +8,10 @@ RUN go mod download
 
 COPY . .
 
-RUN go get -u github.com/swaggo/swag/cmd/swag
+ENV GOPATH /go
+ENV PATH $GOPATH/bin:$PATH
+
+RUN go install github.com/swaggo/swag/cmd/swag@latest
 
 RUN swag init
 
