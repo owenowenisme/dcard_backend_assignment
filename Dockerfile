@@ -8,8 +8,10 @@ RUN go mod download
 
 COPY . .
 
-RUN go build -o main .
+RUN go get -u github.com/swaggo/swag/cmd/swag
 
 RUN swag init
+
+RUN go build -o main .
 
 CMD ["/app/main"]
