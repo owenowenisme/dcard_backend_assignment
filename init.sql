@@ -7,5 +7,5 @@ CREATE TABLE ads (
     age_end int,
     country varchar(100)[],
     platform varchar(100)[],
-    gender varchar(100)[]
+    gender varchar(100)
 );
