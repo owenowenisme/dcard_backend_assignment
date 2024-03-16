@@ -6,7 +6,6 @@ import (
 	"log"
 	"net/http"
 	"strconv"
-	"time"
 
 	"github.com/gin-gonic/gin"
 	_ "github.com/lib/pq"
@@ -77,25 +76,12 @@ func PublicApi(c *gin.Context) {
 	c.JSON(http.StatusOK, result)
 }
 
-// @Summary Get now time in DB
-// @Description Now
-// @Tags For development
-// @Accept   json
-// @Produce  json
-// @Success 200 {object} string
-// @Router /api/v1/now [get]
-func NowTimeInDB(c *gin.Context) {
-	result := time.Now().Local().Format("2006-01-02T15:04:05Z")
-	c.JSON(http.StatusOK, result)
-}
-
 func main() {
 	gin.SetMode(gin.DebugMode)
 	//router := gin.Default()
 	router := gin.New()
 	router.POST("/api/v1/ad", AdminApi)
 	router.GET("/api/v1/ad", PublicApi)
-	router.GET("/api/v1/now", NowTimeInDB)
 	url := ginSwagger.URL("http://localhost:8080/swagger/doc.json") // The url pointing to API definition
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, url))
 

@@ -41,5 +41,5 @@ jobs:
       - name: Build PostgreSQL container
         run: docker-compose up -d
 
-      - name: Test go
+      - name: Test with invalid data handling and valid data with retrieve
         run: go test -v

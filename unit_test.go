@@ -27,6 +27,46 @@ func TestInit(t *testing.T) {
 	t.Logf("HOST_URL: %v", hostUrl)
     t.Logf("ENDPOINT: %v", endpoint)
 }
+func TestInvalidCreateAd(t *testing.T) {
+	data, err := os.ReadFile("testData/createAdInvalidTestData.json")
+	if err != nil {
+		t.Errorf("Failed to read test.json: %v", err)
+		return
+	}
+	var testData []Ad
+	err = json.Unmarshal(data, &testData)
+	if err != nil {
+		t.Errorf("Failed to unmarshal test.json: %v", err)
+		return
+	}
+	for i:= range testData {
+		testData[i] = InitAds()
+	}
+	err = json.Unmarshal(data, &testData)
+	if err != nil {
+		t.Errorf("Failed to unmarshal test.json: %v", err)
+		return
+	}
+	for _, test := range testData {
+		// Use test here
+		requestBody, _ := json.MarshalIndent(test, "", "    ")
+		res, err := http.Post(hostUrl+endpoint, "application/json", io.Reader(strings.NewReader(string(requestBody))))
+		if err != nil {
+			t.Errorf("Failed to send request: %v %v", hostUrl+endpoint,err)
+			continue
+		}
+		body, _ := io.ReadAll(res.Body)
+
+		if res.StatusCode != http.StatusCreated{
+			t.Logf("Failed to create ad: {Code:%v, Body:%v}", res.Status, string(body))
+			continue
+		}
+
+		t.Log("Response status code:", res.StatusCode)
+		t.Log("RequestBody :", test)
+		fmt.Println("---------------------------------")
+	}
+}
 func TestCreateAd(t *testing.T) {
 	data, err := os.ReadFile("testData/createAdTestData.json")
 	if err != nil {
@@ -45,18 +85,19 @@ func TestCreateAd(t *testing.T) {
 		res, err := http.Post(hostUrl+endpoint, "application/json", io.Reader(strings.NewReader(string(requestBody))))
         if err != nil {
 			t.Errorf("Failed to send request: %v %v", hostUrl+endpoint,err)
-			return
+			continue
 		}
         body, _ := io.ReadAll(res.Body)
 
 		if res.StatusCode != http.StatusCreated {
 			t.Logf("Failed to create ad: %v %v ", res.Status, string(body))
 
-			// return
+			continue
 		}
-		t.Log("Response status code:", res.StatusCode)
-		t.Log("RequestBody :", test)
-		fmt.Println("---------------------------------")
+
+		// t.Log("Response status code:", res.StatusCode)
+		// t.Log("RequestBody :", test)
+		// fmt.Println("---------------------------------")
 	}
 }
 func TestRetrieveAd(t *testing.T) {

@@ -1,0 +1,60 @@
+[
+    {
+    },
+    {
+        "title": "testing no startAt",
+        "endAt": "2024-12-07T18:00:00Z"
+    },
+    {
+        "title": "testing no endAt",
+        "startAt": "2024-06-21T05:00:00Z"
+    },
+    {
+        "title": "testing wrong startAt format",
+        "startAt": "2024-01T05:00:00Z",
+        "endAt": "2024-06-21T05:00:00Z"
+    },
+    {
+        "title": "testing wrong endAt format",
+        "startAt": "2024-06-21T05:00:00Z",
+        "endAt": "e"
+    },
+    {
+        "title": "testing startAt is later than endAt",
+        "startAt": "2024-06-21T05:00:00Z",
+        "endAt": "2024-01-27T10:00:00Z"
+    },
+    {
+        "title": "testing only ageStart exist",
+        "startAt": "2024-01-27T10:00:00Z",
+        "endAt": "2024-07-06T20:00:00Z",
+        "conditions": {
+            "ageStart":0
+        }
+    },
+    {
+        "title": "testing only ageEnd exist",
+        "startAt": "2024-01-27T10:00:00Z",
+        "endAt": "2024-07-06T20:00:00Z",
+        "conditions": {
+            "ageEnd":0
+        }
+    },
+    {
+        "title": "testing ageStart is more than ageEnd",
+        "startAt": "2024-01-27T10:00:00Z",
+        "endAt": "2024-07-06T20:00:00Z",
+        "conditions": {
+            "ageStart":100,
+            "ageEnd":0
+        }
+    },
+    {
+        "title": "testing invalid gender",
+        "startAt": "2024-01-27T10:00:00Z",
+        "endAt": "2024-07-06T20:00:00Z",
+        "conditions": {
+            "gender":"Q"
+        }
+    }
+]
