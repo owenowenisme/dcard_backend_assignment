@@ -24,7 +24,6 @@ Dcard Bcakend assignment based on https://drive.google.com/file/d/1dnDiBDen7FrzO
 * Docker <img src="https://skillicons.dev/icons?i=docker" alt="docker" width="40" height="40"/> </a>
 * Python <img src="https://skillicons.dev/icons?i=py" alt="python" width="40" height="40"/> </a>
 * Github Action <img src="https://skillicons.dev/icons?i=githubactions" alt="python" width="40" height="40"/> </a>
-* Jmeter <img src="https://jmeter.apache.org/images/jmeter.png" alt="python" height="40"/> </a>
 
 
 
@@ -102,10 +101,22 @@ Have docker installed on your machine.
 
 
 
-## Jmeter Load Testing Result
-![](https://i.imgur.com/KTG3y9y.png)
+## Load Testing Result (with apache benchmark)
+```
 
-We can see that the api I wrote can't achieve 10,000 request per second,and other than by PC's performance, there are still a few improvements we can do:
-*  Connection Pooling
-*  Horizontal Scaling (maybe with k8s?)
-*  DB Indexing
+> ab -n 10000 -c 100 localhost:8080/api/v1/ad
+       .
+       .
+       .
+Percentage of the requests served within a certain time (ms)
+  50%     10
+  66%     16
+  75%     23
+  80%     33
+  90%    942
+  95%   1037
+  98%   1110
+  99%   1152
+ 100%   1344 (longest request)
+```
+It takes 1.3 second to process 10000 requests, you can review it in github action.
