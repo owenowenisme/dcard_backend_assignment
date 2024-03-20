@@ -16,7 +16,7 @@ import (
 var hostUrl string
 var endpoint string
 func TestInit(t *testing.T) {
-	go main()
+	// go main() // Uncomment this line if you want to test without running the server beforehand
 	if err := godotenv.Load(); err != nil {
 		fmt.Println("No .env file found")
 	}
