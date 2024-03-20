@@ -11,9 +11,15 @@ import (
 	"time"
 )
 
+var db *sql.DB
 func init() {
     if err := godotenv.Load(); err != nil {
         log.Print("No .env file found")
+    }
+	var err error
+	db, err = ConnectDB()
+	if err != nil {
+        log.Fatalf("Could not connect to DB: %v", err)
     }
 }
 
@@ -31,18 +37,13 @@ func ConnectDB() (*sql.DB, error) {
 }
 
 func CreateAds(ad Ad) (int, error) {
-	db, err := ConnectDB()
-	if err != nil {
-		return -1,err
-	}
-	defer db.Close()
 
 	sqlStatement := `
 	INSERT INTO ads (title, start_at, end_at, age_start, age_end, country, platform, gender)
 	VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
 	RETURNING id`
 	id := 0
-	err = db.QueryRow(sqlStatement, ad.Title, ad.StartAt, ad.EndAt, ad.Conditions.AgeStart, ad.Conditions.AgeEnd, pq.Array(ad.Conditions.Country), pq.Array(ad.Conditions.Platform),ad.Conditions.Gender).Scan(&id)
+	err := db.QueryRow(sqlStatement, ad.Title, ad.StartAt, ad.EndAt, ad.Conditions.AgeStart, ad.Conditions.AgeEnd, pq.Array(ad.Conditions.Country), pq.Array(ad.Conditions.Platform),ad.Conditions.Gender).Scan(&id)
 	// err = fmt.Errorf("errors: %v, statement:%v, args:%v,%v,%v",err,sqlStatement,pq.Array(ad.Conditions.Country), pq.Array(ad.Conditions.Platform),ad.Conditions.Gender)
 	if err != nil {
 		err = fmt.Errorf("errors: %v, statement:%v, args:%v,%v%v",err,sqlStatement,pq.Array(ad.Conditions.Country), pq.Array(ad.Conditions.Platform),ad.Conditions.Gender)
@@ -52,12 +53,6 @@ func CreateAds(ad Ad) (int, error) {
 }
 
 func RetrieveAds(q QueryCondition) ([]map[string]interface{}, error) {
-	db, err := ConnectDB()
-	if err != nil {
-		return nil, err
-	}
-	defer db.Close()
-
 
 	sqlStatement := "SELECT title, end_at FROM ads WHERE $1 BETWEEN start_at AND end_at"
     var args []interface{}

@@ -43,3 +43,6 @@ jobs:
 
       - name: Test with invalid data handling and valid data with retrieve
         run: go test -v
+
+      - name: Benchmark 10000 requests
+        run: ab -n 10000 -c 100 localhost:8080/api/v1/ad
