@@ -42,7 +42,7 @@ func AdminApi(c *gin.Context) {
 // @Tags Ads
 // @Produce  json
 // @Param   offset     query   int      false   "Offset for pagination"
-// @Param   limit      query   int      false   "Limit for pagination defalut 5"
+// @Param   limit      query   int      false   "Limit for pagination default 5"
 // @Param   age        query   int      false   "Age to Query"
 // @Param   gender     query   string   false   "Gender"
 // @Param   country    query   string   false   "Country"

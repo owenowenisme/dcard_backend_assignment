@@ -48,7 +48,6 @@ func TestInvalidCreateAd(t *testing.T) {
 		return
 	}
 	for _, test := range testData {
-		// Use test here
 		requestBody, _ := json.MarshalIndent(test, "", "    ")
 		res, err := http.Post(hostUrl+endpoint, "application/json", io.Reader(strings.NewReader(string(requestBody))))
 		if err != nil {
@@ -80,7 +79,6 @@ func TestCreateAd(t *testing.T) {
 		return
 	}
 	for _, test := range testData {
-		// Use test here
 		requestBody, _ := json.MarshalIndent(test, "", "    ")
 		res, err := http.Post(hostUrl+endpoint, "application/json", io.Reader(strings.NewReader(string(requestBody))))
         if err != nil {
@@ -94,10 +92,6 @@ func TestCreateAd(t *testing.T) {
 
 			continue
 		}
-
-		// t.Log("Response status code:", res.StatusCode)
-		// t.Log("RequestBody :", test)
-		// fmt.Println("---------------------------------")
 	}
 }
 func TestRetrieveAd(t *testing.T) {
