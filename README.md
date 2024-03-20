@@ -6,7 +6,6 @@ Dcard Bcakend assignment based on https://drive.google.com/file/d/1dnDiBDen7FrzO
 * Used github action to maintain code consistency and validity(with go-linter and go-test).
 * Containerize with docker for simplicity of deployment.
 * Python for generating test data.
-* Load testing with Jmeter.
 
 ## Test live now!
 
