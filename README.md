@@ -10,10 +10,10 @@ Dcard Bcakend assignment based on https://drive.google.com/file/d/1dnDiBDen7FrzO
 
 ## Test live now!
 
-:::success
-https://ccns.owenowenisme.com/swagger/index.html
-:::
-(Build on my server, performance might not as good as local testing due to network.)
+> https://ccns.owenowenisme.com/swagger/index.html
+> 
+> (Built on my server, performance might not as good as local testing due to network.)
+
 ## Built With
 
 
@@ -52,7 +52,7 @@ Have docker installed on your machine.
 1. Clone this repo and enter in terminal.
 2. Type in your terminal: ```docker compose up -d ```
 3. Go to http://localhost:8080/swagger/index.html for API testing
-4. Use ```go test -v  ``` for automatic testing.
+4. Use ```go test -v``` for automatic testing.
 ## API Reference
 
 ### Retieve Ads
@@ -63,11 +63,11 @@ Have docker installed on your machine.
 
 | Parameter  | Type     | Description                    |
 | :--------  | :------- | :-------------------------     |
-| `offset  ` | `int`    | Offset for pagination          |
-| `limit   ` | `int`    | Limit for pagination default 5 |
-| `age     ` | `int`    | Age to Query                   |
-| `gender  ` | `string` | Gender                         |
-| `country ` | `string` | Country                        |
+| `offset` | `int`    | Offset for pagination          |
+| `limit` | `int`    | Limit for pagination default 5 |
+| `age` | `int`    | Age to Query                   |
+| `gender` | `string` | Gender                         |
+| `country` | `string` | Country                        |
 | `platform` | `string` | Platform                       |
 
 ### Create Ad
@@ -95,11 +95,10 @@ Have docker installed on your machine.
   "title": "string"
 }
 ```
-:::info
+> [!NOTE]
+> All field in conditions are optional
+> startAt and End At should be in "yyyy-mm-ddTHH:MM:SSZ" format
 
-* All field in conditions are optional
-* startAt and End At should be in "yyyy-mm-ddTHH:MM:SSZ" format
-:::
 
 
 
