@@ -108,14 +108,14 @@ Have docker installed on your machine.
        .
        .
 Percentage of the requests served within a certain time (ms)
-  50%     10
-  66%     16
-  75%     23
-  80%     33
-  90%    942
-  95%   1037
-  98%   1110
-  99%   1152
- 100%   1344 (longest request)
+  50%      5
+  66%     10
+  75%    213
+  80%    268
+  90%    300
+  95%    319
+  98%    338
+  99%    352
+ 100%    450 (longest request)
 ```
-It takes 1.3 second to process 10000 requests, you can review it in github action.
+It takes 1.3 second to process 10000 requests, you can review it in github action (https://github.com/owenowenisme/dcard_backend_assignment/actions/runs/8365298002/job/22902780633).
