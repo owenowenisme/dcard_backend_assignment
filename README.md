@@ -118,4 +118,4 @@ Percentage of the requests served within a certain time (ms)
   99%    352
  100%    450 (longest request)
 ```
-It takes 1.3 second to process 10000 requests, you can review it in github action (https://github.com/owenowenisme/dcard_backend_assignment/actions/runs/8365298002/job/22902780633).
+It takes 0.45 second to process 10000 requests (result may vary due to the github host's performance), you can review it in github action (https://github.com/owenowenisme/dcard_backend_assignment/actions/runs/8365298002/job/22902780633).
