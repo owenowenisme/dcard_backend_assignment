@@ -9,7 +9,7 @@ Dcard Bcakend assignment based on https://drive.google.com/file/d/1dnDiBDen7FrzO
 
 ## Test live now!
 
-> https://ccns.owenowenisme.com/swagger/index.html
+>[ https://ccns.owenowenisme.com/swagger/index.html](https://owen.ccns.io/swagger/index.html)
 > 
 > (Built on my server, performance might not as good as local testing due to network.)
 
